@@ -8,4 +8,9 @@ public class Merchant : Villager
     {
         return ChestType.Merchant;
     }
+
+    public override string ToString()
+    {
+        return "Merchant";
+    }
 }

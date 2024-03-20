@@ -1,19 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class CharacterControl : MonoBehaviour
 {
+    public TMPro.TextMeshProUGUI currentSelection;
+    public static CharacterControl Instance;
+
     public static Villager SelectedVillager { get; private set; }
-    public TextMeshProUGUI type;
-
-    private void Start()
-    {
-        type.text = "No Selection";
-    }
-
     public static void SetSelectedVillager(Villager villager)
     {
         if(SelectedVillager != null)
@@ -22,26 +17,11 @@ public class CharacterControl : MonoBehaviour
         }
         SelectedVillager = villager;
         SelectedVillager.Selected(true);
-
-        if (SelectedVillager != null)
-        {
-            CharacterControl.instance.UpdateType(SelectedVillager.GetType().Name);
-        }
-        else
-        {
-            CharacterControl.instance.UpdateType("No Selection");
-        }
+        Instance.currentSelection.text = villager.ToString();
     }
 
-    public static CharacterControl instance;
-
-    private void Awake()
+    private void Start()
     {
-        instance = this;
+        Instance = this;
     }
-
-    public void UpdateType(string text)
-    {
-        type.text = text;    }
-
 }

@@ -18,4 +18,9 @@ public class Archer : Villager
     {
         return ChestType.Archer;
     }
+
+    public override string ToString()
+    {
+        return "Archer";
+    }
 }
