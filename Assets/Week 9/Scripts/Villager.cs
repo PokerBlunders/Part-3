@@ -64,7 +64,7 @@ public class Villager : MonoBehaviour
         rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         //left click: move to the click location
         if (Input.GetMouseButtonDown(0) && isSelected && !clickingOnSelf)
