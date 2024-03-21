@@ -27,6 +27,15 @@ public class CharacterControl : MonoBehaviour
         //currentSelection.text = SelectedVillager.ToString();
     }
 
+    public void OnSliderValueChanged(float value)
+    {
+        if (SelectedVillager != null)
+        {
+            float clampedScale = Mathf.Clamp(value, 0.5f, 2f);
+            SelectedVillager.transform.localScale = new Vector3(clampedScale, clampedScale, clampedScale);
+        }
+    }
+
         public static void SetSelectedVillager(Villager villager)
     {
         if(SelectedVillager != null)

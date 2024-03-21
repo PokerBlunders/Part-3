@@ -23,6 +23,7 @@ public class Villager : MonoBehaviour
         destination = transform.position;
         Selected(false);
     }
+
     public void Selected(bool value)
     {
         isSelected = value;
