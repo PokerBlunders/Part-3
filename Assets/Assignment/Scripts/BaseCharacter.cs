@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public enum Team { Blue, Red }
 
@@ -18,6 +19,14 @@ public class BaseCharacter : MonoBehaviour
     Animator animator;
     bool selfClick;
     bool isDead;
+    TeamManager teamManager;
+
+    protected float attackCooldown = 2f;
+    bool isOnCooldown = false;
+    public Slider cooldownSlider;
+    public float attackRadius = 0.1f;
+
+    public Image hightlight;
 
     protected virtual void Start()
     {
@@ -25,7 +34,6 @@ public class BaseCharacter : MonoBehaviour
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
         destination = transform.position;
-        TeamManager.IncrementTeamCount(team);
     }
 
     private void OnMouseDown()
@@ -65,7 +73,7 @@ public class BaseCharacter : MonoBehaviour
         }
         animator.SetFloat("Walking", movement.magnitude);
 
-        if (Input.GetMouseButtonDown(1) && isSelected)
+        if (Input.GetMouseButtonDown(1) && isSelected && !isOnCooldown)
         {
             Attack();
         }
@@ -73,8 +81,30 @@ public class BaseCharacter : MonoBehaviour
 
     protected virtual void Attack()
     {
-        animator.SetTrigger("Attack");
-        destination = transform.position;
+        if (!isOnCooldown)
+        {
+            animator.SetTrigger("Attack");
+            destination = transform.position;
+
+            StartCoroutine(AttackCooldownCoroutine());
+        }
+    }
+
+    protected virtual IEnumerator AttackCooldownCoroutine()
+    {
+        isOnCooldown = true;
+        float cooldownTimer = attackCooldown;
+
+        while (cooldownTimer > 0f)
+        {
+            cooldownSlider.value = cooldownTimer / attackCooldown;
+
+            yield return new WaitForSeconds(0.1f);
+            cooldownTimer -= 0.1f;
+        }
+
+        isOnCooldown = false;
+        cooldownSlider.value = 0f;
     }
 
     private void TakeDamage(int damage)
@@ -92,7 +122,7 @@ public class BaseCharacter : MonoBehaviour
 
         foreach (BaseCharacter character in characters)
         {
-            if (character.team != this.team)
+            if (character.team != this.team && Vector2.Distance(transform.position, character.transform.position) <= attackRadius)
             {
                 character.TakeDamage(damage);
             }
@@ -102,18 +132,21 @@ public class BaseCharacter : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log(gameObject.name + " has died.");
         animator.SetTrigger("Die");
         isDead = true;
+
+        TeamManager.IncrementTeamKills(team);
     }
 
     public void SelectCharacter()
     {
         isSelected = true;
+        hightlight.color = Color.white;
     }
 
     public void DeselectCharacter()
     {
         isSelected = false;
+        hightlight.color = Color.black;
     }
 }

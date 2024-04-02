@@ -33,6 +33,5 @@ public class CharaterSelector : MonoBehaviour
         }
             selectedCharacter = character;
             selectedCharacter.SelectCharacter();
-            Debug.Log("Selected character: " + character.gameObject.name);
     }
 }
