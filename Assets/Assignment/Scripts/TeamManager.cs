@@ -21,11 +21,25 @@ public class TeamManager : MonoBehaviour
         {
             blueTeamKills++;
         }
+        CheckForVictory();
     }
 
     private void Update()
     {
         blueTeamText.text = blueTeamKills.ToString();
         redTeamText.text = redTeamKills.ToString();
+    }
+
+    private static void CheckForVictory()
+    {
+        if (blueTeamKills == 2 || redTeamKills == 2)
+        {
+            BaseCharacter[] characters = FindObjectsOfType<BaseCharacter>();
+
+            foreach (BaseCharacter character in characters)
+            {
+                character.Victory();
+            }
+        }
     }
 }

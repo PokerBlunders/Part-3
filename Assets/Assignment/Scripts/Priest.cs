@@ -6,9 +6,10 @@ public class Priest : BaseCharacter
 {
     protected override void Start()
     {
-        base.Start();
         attackRadius = 5f;
         attackCooldown = 3f;
+        maxHealth = 50;
+        base.Start();
     }
 
     protected override IEnumerator AttackCooldownCoroutine()

@@ -10,7 +10,7 @@ public class BaseCharacter : MonoBehaviour
 {
     public Team team;
     public float speed = 5f;
-    public int maxHealth = 100;
+    public int maxHealth;
     public int currentHealth;
     Rigidbody2D rb;
     Vector2 destination;
@@ -21,10 +21,10 @@ public class BaseCharacter : MonoBehaviour
     bool isDead;
     TeamManager teamManager;
 
-    protected float attackCooldown = 2f;
+    protected float attackCooldown;
     bool isOnCooldown = false;
     public Slider cooldownSlider;
-    public float attackRadius = 0.1f;
+    public float attackRadius;
 
     public Image hightlight;
 
@@ -104,12 +104,16 @@ public class BaseCharacter : MonoBehaviour
         }
 
         isOnCooldown = false;
-        cooldownSlider.value = 0f;
+        cooldownSlider.value = 1;
     }
 
     private void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        if (currentHealth > 0 && !isDead)
+        {
+            animator.SetTrigger("Hurt");
+        }
         if (currentHealth <= 0 && !isDead)
         {
             Die();
@@ -136,6 +140,14 @@ public class BaseCharacter : MonoBehaviour
         isDead = true;
 
         TeamManager.IncrementTeamKills(team);
+    }
+
+    public void Victory()
+    {
+        if (!isDead)
+        {
+            animator.SetTrigger("Victory");
+        }
     }
 
     public void SelectCharacter()
