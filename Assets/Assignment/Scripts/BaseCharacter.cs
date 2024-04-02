@@ -25,6 +25,7 @@ public class BaseCharacter : MonoBehaviour
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
         destination = transform.position;
+        TeamManager.IncrementTeamCount(team);
     }
 
     private void OnMouseDown()
