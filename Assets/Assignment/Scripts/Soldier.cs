@@ -22,4 +22,30 @@ public class Soldier : BaseCharacter
         base.Attack();
         DealDamage(20);
     }
+
+    protected void Charge()
+    {
+        if (!isOnCooldown)
+        {
+            speed *= 2;
+            StartCoroutine(ResetSpeedAfterDelay(2));
+            StartCoroutine(AttackCooldownCoroutine());
+        }
+    }
+
+    private IEnumerator ResetSpeedAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        speed /= 2;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Charge();
+        }
+    }
 }

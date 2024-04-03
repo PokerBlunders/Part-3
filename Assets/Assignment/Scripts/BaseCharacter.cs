@@ -22,7 +22,7 @@ public class BaseCharacter : MonoBehaviour
     TeamManager teamManager;
 
     protected float attackCooldown;
-    bool isOnCooldown = false;
+    protected bool isOnCooldown = false;
     public Slider cooldownSlider;
     public float attackRadius;
 
@@ -62,7 +62,7 @@ public class BaseCharacter : MonoBehaviour
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (Input.GetMouseButtonDown(0) && isSelected && !selfClick && !isDead)
         {

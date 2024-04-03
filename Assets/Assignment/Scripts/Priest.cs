@@ -22,4 +22,28 @@ public class Priest : BaseCharacter
         base.Attack();
         DealDamage(10);
     }
+
+    protected void Heal()
+    {
+        if (!isOnCooldown)
+        {
+            int healAmount = 10;
+            currentHealth += healAmount;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            StartCoroutine(AttackCooldownCoroutine());
+        }
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Heal();
+        }
+    }
 }
